@@ -1,0 +1,60 @@
+{
+  "name": "serverless-babel-boilerplate",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "babel --out-dir=dist src",
+    "prepare": "npm run build",
+    "dev": "npm-run-parallel watch start test:watch",
+    "watch": "npm-watch build",
+    "start": "sls offline",
+    "test": "jest src",
+    "test:watch": "jest src --watch",
+    "deploy": "npm run build && sls deploy",
+    "deploy:prod": "npm run build && sls deploy --stage prod"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-jest": "^22.4.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.18.2",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-config-prettier-standard": "^1.0.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "jest": "^22.4.2",
+    "npm-run-parallel": "^0.6.0",
+    "npm-watch": "^0.3.0",
+    "prettier": "^1.11.1",
+    "serverless-offline": "^3.18.0"
+  },
+  "jest": {
+    "testMatch": [
+      "**/src/**/*.test.js",
+      "**/src/**/test.js"
+    ]
+  },
+  "files": [
+    "dist"
+  ],
+  "watch": {
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "js",
+      "quiet": true 
+    }
+  }
+}
