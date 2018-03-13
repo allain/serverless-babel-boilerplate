@@ -1,13 +1,15 @@
 // @flow
-import awsServerlessExpress from 'aws-serverless-express'
+// import awsServerlessExpress from 'aws-serverless-express'
 import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import jwt from 'express-jwt'
 // import compression from 'compression'
+import awsServerlessExpress from 'aws-serverless-express'
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware'
-import graphqlHTTP from 'express-graphql'
-import schema from './graphql/schema'
+import { graphqlExpress, graphiqlExpress } from 'apollo-server-express'
+
+import schema from './graphql'
 import auth from './lib/auth'
 import { JWT_SECRET } from './config'
 
@@ -29,18 +31,18 @@ app.post('/auth', (req, res) =>
   })
 )
 
-const graphqlHandler = graphqlHTTP(
-  async (request, response, graphQLParams) => ({
-    schema,
-    rootValue: {
-      hello: 'Testing'
-    },
-    graphiql: true
-  })
+app.use(
+  '/graphql',
+  bodyParser.json(),
+  jwt({ secret: JWT_SECRET, credentialsRequired: false }),
+  graphqlExpress({ schema, tracing: true })
 )
 
-app.use('/graphql', jwt({ secret: JWT_SECRET }), graphqlHandler)
-app.use('/graphqli', graphqlHandler)
+app.use(
+  '/graphiql',
+  bodyParser.json(),
+  graphiqlExpress({ endpointURL: '/graphql' })
+)
 
 const server = awsServerlessExpress.createServer(app)
 
