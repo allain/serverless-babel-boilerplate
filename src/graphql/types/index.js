@@ -1,6 +1,6 @@
 const RootQuery = `
 type RootQuery {
-  hello: String
+  hello: String!
 }
 `
 const Mutations = `
